@@ -21,7 +21,7 @@ data.loc[dbh2_nulls, 't551_DBH2'] = \
     data.loc[dbh2_nulls, 't551_DBH'] - \
     (abs(data.loc[dbh2_nulls, 't551_DBH1'] - data.loc[dbh2_nulls, 't551_DBH']))
 
-print('Basal are sums:')
+print('Basal area sums:')
 print(data.t551_DBH2.sum(), data.t551_DBH.sum(), data.t551_DBH1.sum())
 
 data.to_csv('t551_for_analysis.csv', index=False)
