@@ -14,15 +14,14 @@ print(f'DBH1 is null in {dbh1_nulls.size} locations \n'
       f'DBH2 is null in {dbh2_nulls.size} locations')
 
 data.loc[dbh1_nulls, 't551_DBH1'] = \
-       data.loc[dbh1_nulls, 't551_DBH'] - \
-       (abs(data.loc[dbh1_nulls, 't551_DBH2'] - data.loc[dbh1_nulls, 't551_DBH']))
+    data.loc[dbh1_nulls, 't551_DBH'] - \
+    (abs(data.loc[dbh1_nulls, 't551_DBH2'] - data.loc[dbh1_nulls, 't551_DBH']))
 
 data.loc[dbh2_nulls, 't551_DBH2'] = \
-      data.loc[dbh2_nulls, 't551_DBH'] - \
-      (abs(data.loc[dbh2_nulls, 't551_DBH1'] - data.loc[dbh2_nulls, 't551_DBH']))
+    data.loc[dbh2_nulls, 't551_DBH'] - \
+    (abs(data.loc[dbh2_nulls, 't551_DBH1'] - data.loc[dbh2_nulls, 't551_DBH']))
 
 print('Basal are sums:')
 print(data.t551_DBH2.sum(), data.t551_DBH.sum(), data.t551_DBH1.sum())
-
 
 data.to_csv('t551_for_analysis.csv', index=False)
