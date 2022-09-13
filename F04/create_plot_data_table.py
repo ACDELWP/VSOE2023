@@ -1,6 +1,5 @@
 from pandas import read_csv
 
-
 data = read_csv('FF_20220829_1700.csv')
 
 # assign 'PRIVATE' labels
@@ -37,7 +36,6 @@ data.loc[data.MMTGEN == 'OTHER PUBLIC LAND', 'label'] = 'Other Crown Land'
 # select column subset for analysis
 table_data = data[['bioregion', 'gridcode', 'label', 'AREA_HA']]
 del data
-
 
 table_plot_data_name = 'f04_plot_data.csv'
 with open(table_plot_data_name, 'w') as w:
