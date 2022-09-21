@@ -52,4 +52,16 @@ for samplePoint in t551.SamplePointID.unique():
         t551.SamplePointID == samplePoint, 'BioRegion'
     ] = t500.loc[t500.t500_SamplePointID == samplePoint].t500_IBRA61Bioregion.unique()[0]
 
+t551['VicGridXGIS'] = ''
+for samplePoint in t551.SamplePointID.unique():
+    t551.loc[
+        t551.SamplePointID == samplePoint, 'BioRegion'
+    ] = t500.loc[t500.t500_SamplePointID == samplePoint].t500_VicGridXGIS.unique()[0]
+
+t551['VicGridYGIS'] = ''
+for samplePoint in t551.SamplePointID.unique():
+    t551.loc[
+        t551.SamplePointID == samplePoint, 'BioRegion'
+    ] = t500.loc[t500.t500_SamplePointID == samplePoint].t500_VicGridYGIS.unique()[0]
+
 t551.to_csv('t551_appended.csv', index=False)
