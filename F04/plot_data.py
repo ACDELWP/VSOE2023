@@ -1,10 +1,11 @@
-from pandas import read_csv
 import matplotlib
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+from pandas import read_csv
+from os.path import isfile
 
+def make_plot(local_subplot, local_plot_id, bioregion, colours, frag_categories, y_tick_locations, y_ticks, logfile):
 
-def make_plot(local_subplot, local_plot_id, bioregion, colours, frag_categories, y_tick_locations, y_ticks):
     local_plot = local_subplot[local_plot_id[0], local_plot_id[1]]
     y_offset = np.zeros(4)
     sub_plot_data = data.loc[data.bioregion == bioregion]
@@ -27,6 +28,19 @@ def make_plot(local_subplot, local_plot_id, bioregion, colours, frag_categories,
         local_plot.bar(x_data, plot_data, bottom=y_offset, color=colours[frag_cat])
         y_offset = y_offset + plot_data
 
+        if not isfile(logfile):
+            logfile_header = 'bioregion,frag_category,'
+            logfile_header = logfile_header + ','.join(str(x_data_item) for x_data_item in list(x_data)) + '\n'
+            print(logfile_header)
+            with open(logfile, 'w') as w:
+                w.writelines(logfile_header)
+
+        with open(logfile, 'a') as a:
+            local_log_line = f'{bioregion},{frag_cat},'
+            local_log_line = local_log_line + ','.join(str(x_data_item) for x_data_item in list(plot_data)) + '\n'
+            print(local_log_line)
+            a.writelines(local_log_line)
+
         if local_plot_id[0] == 3:
             if local_plot_id[1] == 0:
                 local_subplot[3, 0].set_xticklabels(x_data, rotation=45)
@@ -37,6 +51,8 @@ def make_plot(local_subplot, local_plot_id, bioregion, colours, frag_categories,
 
 
 data = read_csv('table_plot_data.csv')
+output_log_file = 'f04_fragmentation_by_bioregion_2022.csv'
+output_image_name = 'f04_fragmentation_by_bioregion_2022.jpg'
 
 # add gridcode labels
 # Grid code 1 - Patch | 2 - Transitional | 3 - Perforated | 4 - Edge | 5 - Interior | 0=nonforest
@@ -48,7 +64,7 @@ data.loc[data.gridcode == 4, 'frag_category'] = 'Edge'
 data.loc[data.gridcode == 5, 'frag_category'] = 'Interior'
 data.loc[data.gridcode == 0, 'frag_category'] = 'Non Forest'
 
-frag_categories = data.frag_category.unique().tolist()
+fragmentation_categories = data.frag_category.unique().tolist()
 
 # setup color codes to be used in plots
 color_codes = {
@@ -63,30 +79,33 @@ color_codes = {
 bioregions = data.bioregion.unique()
 x_tick_location = [1, 2, 3, 4]
 blank_x_ticks = ['', '', '', '']
-y_tick_location = [0.2, 0.4, 0.6, 0.8, 1.0]
-y_ticks = ['20%', '40%', '60%', '80%', '100%']
+ytick_locations = [0.2, 0.4, 0.6, 0.8, 1.0]
+y_tick_marks = ['20%', '40%', '60%', '80%', '100%']
 plot_locations = [[0, 0], [0, 1], [1, 0], [1, 1], [1, 2], [2, 0], [2, 1], [2, 2], [3, 0], [3, 1], [3, 2]]
 
 matplotlib.rc('xtick', labelsize=14)
 matplotlib.rc('ytick', labelsize=14)
 fig, axs = plt.subplots(4, 3, figsize=(20, 15))
-for index, bioregion in enumerate(bioregions):
-    print(index, plot_locations[index], bioregion)
-    make_plot(axs, plot_locations[index], bioregion, color_codes, frag_categories, y_tick_location, y_ticks)
+for index, local_bioregion in enumerate(bioregions):
+    print(index, plot_locations[index], local_bioregion)
+    make_plot(
+        axs, plot_locations[index], local_bioregion, color_codes,
+        fragmentation_categories, ytick_locations, y_tick_marks, output_log_file
+    )
 
 for ax in fig.get_axes():
     ax.label_outer()
 
 # ok, now set up the legend in axs[0, 2]
 axs[0, 2].axis('off')
-for index, frag_cat in enumerate(frag_categories):
-    local_color = color_codes[frag_cat]
+for index, frag_category in enumerate(fragmentation_categories):
+    local_color = color_codes[frag_category]
     # now plot a thick line from 1 to 2 at 0.3 + index/10
     axs[0, 2].plot([1, 1.2], [0.3 + index / 10, 0.3 + index / 10], linewidth=15, color=local_color)
-    axs[0, 2].text(1.4, 0.3 + index / 10 - 0.03, frag_cat, fontsize=14)
+    axs[0, 2].text(1.4, 0.3 + index / 10 - 0.03, frag_category, fontsize=14)
     axs[0, 2].set_ylim([0, 1.1])
     axs[0, 2].set_xlim([0, 3])
 
     axs[0, 2].text(0.9, 0.8, 'Fragmentation Category', fontsize=14)
 
-fig.savefig('f04_fragmentation_by_bioregion_2022.jpg')
+fig.savefig(output_image_name)
