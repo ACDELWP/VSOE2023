@@ -16,3 +16,6 @@ This procedure introduces further cuts to the analysis superset. It removes ['M'
 and most importantly cleans up NaN values in the t551_DBH1/2 columns. This is a crucial step as these 
 columns will define the upper and lower bounds of the t551_DBH distribution. In addition, this dataset is the basis 
 for the forest health mapping exercise using the kriging method in ArcGIS.
+
+## make_dead_to_total_basal_area_plot.py
+This procedure first produces a csv summary of the data that will be plotted.
