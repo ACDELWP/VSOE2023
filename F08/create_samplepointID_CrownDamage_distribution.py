@@ -12,7 +12,6 @@ data.drop_duplicates(inplace=True)
 # drop undefined values
 data = data.loc[data.CrownDamage.astype(int) != -99]
 
-
 # do average by samplepointid, tenure, bioregion, year
 for sample_point in data.SamplePointID.unique():
     years = data.loc[data.SamplePointID == sample_point].year.unique().tolist()
@@ -23,11 +22,10 @@ for sample_point in data.SamplePointID.unique():
                 (data.SamplePointID == sample_point) &
                 (data.year == year) &
                 (data.Tenure == tenure)
-            ].index
+                ].index
 
-            local_average = data.loc[local_index].CrownDamage.astype(float).sum()/len(local_index)
+            local_average = data.loc[local_index].CrownDamage.astype(float).sum() / len(local_index)
             data.loc[local_index, 'CrownDamage'] = local_average
-
 
 # drop duplicate entries
 data.drop_duplicates(inplace=True)
@@ -41,7 +39,7 @@ for sample_point in data.SamplePointID.unique():
         drop_index = data.loc[
             (data.SamplePointID == sample_point) &
             (data.year == min(years))
-        ].index
+            ].index
 
         data.drop(drop_index, inplace=True)
 
