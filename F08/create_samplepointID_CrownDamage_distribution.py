@@ -25,8 +25,7 @@ for sample_point in data.SamplePointID.unique():
             data.loc[local_index, 'CrownDamage'] = local_average
 
 
-# now just keep the latest year
-# do average by SamplePointID, tenure, bioregion, year
+# now, drop the earliest year value for multiple year entries.
 for sample_point in data.SamplePointID.unique():
     years = data.loc[data.SamplePointID == sample_point].year.unique().tolist()
     if len(years) > 1:
