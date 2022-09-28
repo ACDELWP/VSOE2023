@@ -64,7 +64,7 @@ for samplePoint in t551.SamplePointID.unique():
         t551.SamplePointID == samplePoint, 't500_VicGridYGIS'
     ] = t500.loc[t500.t500_SamplePointID == samplePoint].t500_VicGridYGIS.unique()[0]
 
-# add damage which is 100 - (t551_CrownDefoliated + t551_CrownDiscoloured)
+# add damage which is (t551_CrownDefoliated + t551_CrownDiscoloured)
 # adjust for null values in each of the columns
     # if both columns are null ->  CrownDamage is null
     # if only one column is null -> CrownDamage is the non-null value
@@ -88,9 +88,5 @@ t551.loc[t551_crown_discol_index_diff, 'CrownDamage'] = t551.loc[t551_crown_disc
 
 # CrownDamage could be higher than 100
 t551.loc[t551.loc[t551.CrownDamage.astype(int) > 100].index, 'CrownDamage'] = 100
-
-# now, finally subtract damage from 100 for the final value
-defined_cd_entries = t551.loc[t551.CrownDamage.astype(int) != -99].index.tolist()
-t551.loc[defined_cd_entries, 'CrownDamage'] = 100 - t551.loc[defined_cd_entries, 'CrownDamage'].astype(int)
 
 t551.to_csv('t551_appended.csv', index=False)
