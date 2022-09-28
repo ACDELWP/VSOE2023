@@ -51,7 +51,7 @@ for bioregion in table_data.bioregion.unique():
             local_area = subset.loc[(subset.gridcode == gridcode) &
                                     (subset.label == label)
                                     ].AREA_HA.sum()
-            # 'bioregion,gridcode,gridcode_name,MMGTGEN,local_area,local_area_pct,sum_area\n'
+            # 'bioregion,gridcode,gridcode_name,label,local_area,local_area_pct,sum_area\n'
             output_line = f'{bioregion},{gridcode},{label},{local_area},{local_area / sum_area},{sum_area}\n'
             with open(table_plot_data_name, 'a') as a:
                 a.writelines(output_line)
