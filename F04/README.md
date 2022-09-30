@@ -14,3 +14,7 @@ area by bioregion, MMTGEN derived label and gridcode. Finally, it computes relat
 ## plot_data.py
 This procedure reads in the above csv file and creates a 3x4 panel plot. It also logs the exact numerical values used 
 in the plot itself.
+
+## make_reporting_tables.ipynb
+This notebook replicates the 2018 tables associated with this indicator. Table specific notes are attached to each 
+workflow segment and JIRA links are included where relevant.
