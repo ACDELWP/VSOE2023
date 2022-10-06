@@ -25,6 +25,7 @@ t551['day'] = t551['t551_FieldCreatedDate'].apply(lambda x: int(str(x).split(' '
 t551.drop(t551.loc[(t551.year < 2016)].index, inplace=True)
 t551.drop(t551.loc[(t551.year == 2016) & (t551.month < 7)].index, inplace=True)
 t551.drop(t551.loc[(t551.year == 2021) & (t551.month > 6)].index, inplace=True)
+t551.drop(t551.loc[(t551.year == 2022)].index, inplace=True)
 
 # now, t551 should only have measurements from the respective financial years considered
 # next, we need tenure from t500
@@ -39,6 +40,13 @@ for measurement in t551.t551_MeasurementEventID.unique():
     t551.loc[
         t551.t551_MeasurementEventID == measurement, 'SamplePointID'
     ] = t510.loc[t510.t510_MeasurementEventID == measurement].t510_SamplePointID.unique()[0]
+
+
+t551['Audit'] = False
+for measurement in t551.t551_MeasurementEventID.unique():
+    t551.loc[
+        t551.t551_MeasurementEventID == measurement, 'Audit'
+    ] = t510.loc[t510.t510_MeasurementEventID == measurement].t510_Audit.unique()[0]
 
 t551['Tenure'] = ''
 for samplePoint in t551.SamplePointID.unique():

@@ -1,3 +1,5 @@
+from statistics import stdev
+
 from pandas import read_csv
 
 data = read_csv('t551_for_analysis.csv')

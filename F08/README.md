@@ -17,10 +17,10 @@ columns is undefined, CrownDamage is equal to the defined value. If both columns
 
 This creates the analysis superset from which further cuts will be made. 
 
-## select_analysis_data_subset.py
+## create_relative_error_bars_for_basal_area_by_bioregion.py
 This procedure introduces further cuts to the analysis superset. It removes ['M', 'LF'] values from t551_TreeStatus 
-and most importantly cleans up NaN values in the t551_DBH1/2 columns. This is a crucial step as these 
-columns will define the upper and lower bounds of the t551_DBH distribution. 
+and drops the Audit == True entries from the analysis file to be used downstream, t551_for_analysis.csv. It also 
+computes relative error bars by bioregion. The method for error calculation is further described in code comments.
 
 ## make_dead_to_total_basal_area_plot.py
 This procedure first produces a csv summary of the data that will be plotted.
