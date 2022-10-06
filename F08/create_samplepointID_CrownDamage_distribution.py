@@ -1,13 +1,15 @@
 from pandas import read_csv
 
 data = read_csv('t551_appended.csv')
+data = data.loc[data.Audit == False]
+
+# drop undefined values and keep non-Audit entries
+data = data.loc[data.CrownDamage.astype(int) != -99]
 
 # extract subset to be used for kriging method
 data = data[['SamplePointID', 't551_CreatedByWhom', 'year', 'BioRegion',
              'Tenure', 'CrownDamage', 't500_VicGridXGIS', 't500_VicGridYGIS']]
 
-# drop undefined values
-data = data.loc[data.CrownDamage.astype(int) != -99]
 
 # do average by samplepointid, tenure, bioregion, year
 for sample_point in data.SamplePointID.unique():
@@ -41,4 +43,5 @@ for sample_point in data.SamplePointID.unique():
 data.drop_duplicates(inplace=True)
 
 data.sort_values(by=['SamplePointID', 'year'], inplace=True)
+
 data.to_csv('t551_for_kriging_method.csv', index=False)
