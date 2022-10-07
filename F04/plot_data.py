@@ -18,8 +18,8 @@ def make_plot(local_subplot, local_plot_id, bioregion, colours, frag_categories,
             ] = plot_subset.loc[plot_subset.label == local_label].local_area_pct.sum()
 
         plot_subset.drop_duplicates(subset=['label'], inplace=True)
-        x_data = plot_subset.label.to_numpy()
-        plot_data = plot_subset.local_area_pct.to_numpy()
+        x_data = list(plot_subset.label)
+        plot_data = list(plot_subset.local_area_pct)
         local_plot.set_title(bioregion)
         local_plot.grid(axis='y', linestyle='--', color='black')
         local_plot.set_yticks(y_tick_locations)
